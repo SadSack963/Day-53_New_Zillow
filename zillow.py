@@ -29,46 +29,48 @@ USER_AGENT = [
 ]
 
 
-def get_webpage(url, file):
+def get_webpage(url=URL, file=FILE, test=False):
     """
     Function to get the HTML of a webpage.
-    If an HTML file exists then the HTML is loaded from file,
+    If an HTML file exists and test is True then the HTML is loaded from file,
     otherwise the HTML is downloaded from the URL.
 
-    :param url: webpage URL
+    :param url: webpage URL - defaults to constant URL
     :type url: string
-    :param file: path to HTML file
+    :param file: path to HTML file - defaults to constant FILE
     :type file: string
+    :param test: if True, load webpage from file if available
+    :type test: boolean
     :return: HTML of the webpage
     :rtype: string
     """
     import os
 
-    if not os.path.exists(file):
-        print(
-            "Retrieving Webpage from URL"
-            "==========================="
-        )
-        html = download_webpage(url=url, file=file)
-    else:
+    if os.path.exists(file) and test:
         print(
             "Loading Webpage From File"
             "========================="
         )
         with open(file, mode='r', encoding='utf-8') as fp:
             html = fp.read()
+    else:
+        print(
+            "Retrieving Webpage from URL"
+            "==========================="
+        )
+        html = download_webpage(url=url, file=file)
     return html
 
 
-def download_webpage(url, file):
+def download_webpage(url=URL, file=FILE):
     """
     Function to download the raw (unrendered) HTML code from a webpage.
     The HTML is saved in a file of your choice for future use, e.g. during code testing.
     To download a fresh copy of the web page, simply delete the existing file.
 
-    :param url: webpage URL
+    :param url: webpage URL - defaults to constant URL
     :type url: string
-    :param file: path to HTML file
+    :param file: path to HTML file - defaults to constant FILE
     :type file: string
     :return: HTML downloaded from webpage
     :rtype: string
@@ -93,4 +95,4 @@ def download_webpage(url, file):
 
 
 if __name__ == '__main__':
-    raw_html = get_webpage(url=URL, file=FILE)
+    raw_html = get_webpage(test=True)
